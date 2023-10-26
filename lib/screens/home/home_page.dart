@@ -149,9 +149,10 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Center(
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(top: 40),
+                              padding: const EdgeInsets.only(top: 30),
                               child:
                               Text(
                                 'Bangkok',
@@ -172,10 +173,21 @@ class _HomePageState extends State<HomePage> {
                             Padding(
                               padding: EdgeInsets.only(bottom: 10),
                               child: Text(
-                                '2023-10-26 10:15',
+                                '2023-10-26 9:00',
                                 style: TextStyle(
-                                  fontSize: 10
+                                  fontSize: 15,
+                                  color: Colors.blueGrey
                                 ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Image.asset('assets/images/116.png',),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                'Partly cloundy'
                               ),
                             )
                           ],
