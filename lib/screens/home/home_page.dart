@@ -1,3 +1,5 @@
+import 'package:final_630710332/models/environment.dart';
+import 'package:final_630710332/responsitories/environment_responsitories.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -8,14 +10,66 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<Environment>? _environments;
+  var _isLoading = false;
+  String? _errorMessage;
+  Environment? environmentList;
+
+  @override
+  void initState() {
+    super.initState();
+    getEnvironment();
+  }
+
+  getEnvironment() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    await Future.delayed(Duration(seconds: 2));
+
+    try {
+      var environments = await EnvironmentRespository().getEnvironment();
+      debugPrint('เกิดข้อผิดพลาด');
+
+      setState(() {
+        _environments = environments;
+      });
+    }catch (e) {
+      setState(() {
+        _errorMessage = e.toString();
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    Widget body;
 
     buildLoadingOverlay() => Container(
         color: Colors.black.withOpacity(0.2),
         child: Center(child: CircularProgressIndicator()));
 
+    buildError() => Center(
+        child: Padding(
+            padding: const EdgeInsets.all(40.0),
+            child:
+            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text(_errorMessage ?? '', textAlign: TextAlign.center),
+              SizedBox(height: 32.0),
+              ElevatedButton(onPressed: getEnvironment, child: Text('Retry'))
+            ])));
+
+    buildList() => ListView.builder(
+      itemBuilder: (ctx, i) {
+        environmentList = _environments![i];
+      }
+    );
 
     return Scaffold(
       body: Container(
@@ -96,7 +150,34 @@ class _HomePageState extends State<HomePage> {
                       Center(
                         child: Column(
                           children: [
-
+                            Padding(
+                              padding: const EdgeInsets.only(top: 40),
+                              child:
+                              Text(
+                                'Bangkok',
+                                style: TextStyle(
+                                  fontSize: 50,
+                                )
+                              ),
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                              child: Text(
+                                'Thailand',
+                                style: TextStyle(
+                                  fontSize: 20
+                                ),
+                              )
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 10),
+                              child: Text(
+                                '2023-10-26 10:15',
+                                style: TextStyle(
+                                  fontSize: 10
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),
